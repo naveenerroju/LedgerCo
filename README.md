@@ -1,95 +1,31 @@
-# The Ledger Co. - Loan and EMI Management System
+# Pre-requisites
+* Java 1.8/1.11/1.15
+* Maven
 
-## Overview
+# How to run the code
 
-**The Ledger Co.** is a marketplace for banks to lend money to borrowers. This project implements a system to track loan disbursements, EMI payments, lump sum payments, and remaining EMIs.
+We have provided scripts to execute the code. 
 
-The system performs the following tasks:
-1. Process loans between banks and borrowers.
-2. Track EMI payments over a period of time.
-3. Handle lump sum payments made by borrowers.
-4. Provide the current balance (amount paid and EMIs left) at any given point in the loan cycle.
+Use `run.sh` if you are Linux/Unix/macOS Operating systems and `run.bat` if you are on Windows.  Both the files run the commands silently and prints only output from the input file `sample_input/input1.txt`. You are supposed to add the input commands in the file from the appropriate problem statement. 
 
-## Problem Statement
+Internally both the scripts run the following commands 
 
-The system takes input commands to:
-1. Record a loan with details like bank name, borrower name, loan amount, tenure, and interest rate.
-2. Record a lump sum payment made after a certain EMI.
-3. Retrieve the balance for a specific EMI, showing the total amount paid so far and remaining EMIs.
+ * `mvn clean install -DskipTests assembly:single -q` - This will create a jar file `geektrust.jar` in the `target` folder.
+ * `java -jar target/geektrust.jar sample_input/input1.txt` - This will execute the jar file passing in the sample input file as the command line argument
 
-### Formulae Used:
-- **Interest:**  
-  \[
-  I = P \times N \times R / 100
-  \]
-  Where:
-    - `P` is the Principal Amount
-    - `N` is the number of years
-    - `R` is the rate of interest
+ We expect your program to take the location to the text file as parameter. Input needs to be read from a text file, and output should be printed to the console. The text file will contain only commands in the format prescribed by the respective problem.
 
-- **Total Amount to repay:**  
-  \[
-  A = P + I
-  \]
+ Use the pom.xml provided along with this project. Please change the main class entry (`<mainClass>com.example.geektrust.Main</mainClass>`) in the pom.xml if your main class has changed.
 
-- **EMI (Monthly Installment):**  
-  \[
-  EMI = \lceil A / (N \times 12) \rceil
-  \]
-  Where:
-    - `A` is the total amount
-    - `N` is the number of years
-    - The result is always rounded up to the nearest integer.
+ # Running the code for multiple test cases
 
-- **Remaining EMIs after a lump sum payment:**  
-  Recalculate EMIs based on the remaining balance after deducting lump sum payments.
+ Please fill `input1.txt` and `input2.txt` with the input commands and use those files in `run.bat` or `run.sh`. Replace `java -jar target/geektrust.jar sample_input/input1.txt` with `java -jar target/geektrust.jar sample_input/input2.txt` to run the test case from the second file. 
 
-## Input Commands
+ # How to execute the unit tests
 
-The system accepts the following commands:
+ `mvn clean test` will execute the unit test cases.
 
-1. **LOAN**: Records a loan disbursement.
-    - **Format**: `LOAN BANK_NAME BORROWER_NAME PRINCIPAL NO_OF_YEARS RATE_OF_INTEREST`
-    - **Example**: `LOAN IDIDI Dale 10000 5 4`
+# Help
 
-2. **PAYMENT**: Records a lump sum payment after a specified EMI.
-    - **Format**: `PAYMENT BANK_NAME BORROWER_NAME LUMP_SUM_AMOUNT EMI_NO`
-    - **Example**: `PAYMENT MBI Harry 1000 5`
-
-3. **BALANCE**: Retrieves the current balance for a specific EMI number.
-    - **Format**: `BALANCE BANK_NAME BORROWER_NAME EMI_NO`
-    - **Example**: `BALANCE IDIDI Dale 5`
-
-### Assumptions
-
-1. Payments will be made every month through EMIs until the loan is fully repaid.
-2. Lump sum payments can be made at any time before the loan period ends.
-3. If the remaining amount to repay is less than the EMI, the EMI will be adjusted accordingly for the final payment.
-
-## Output Format
-
-For each balance query, the output will show:
-- `BANK_NAME BORROWER_NAME AMOUNT_PAID NO_OF_EMIS_LEFT`
-
-### Example
-
-#### Input:
-```text
-LOAN IDIDI Dale 10000 5 4
-LOAN MBI Harry 2000 2 2
-BALANCE IDIDI Dale 5
-BALANCE IDIDI Dale 40
-BALANCE MBI Harry 12
-BALANCE MBI Harry 0
-```
-#### Output:
-```text
-IDIDI Dale 1000 55
-IDIDI Dale 8000 20
-MBI Harry 1044 12
-MBI Harry 0 24
-
-```
-### Unit testing
-unit tests are provided to validate the code and calculations.
-There is 91% of line coverage
+You can refer our help documents [here](https://help.geektrust.com)
+You can read build instructions [here](https://github.com/geektrust/coding-problem-artefacts/tree/master/Java)
